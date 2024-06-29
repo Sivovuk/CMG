@@ -11,16 +11,18 @@ public class CardController : MonoBehaviour
     private Button _button;
     [SerializeField]
     private Image _cardIcon;
+    [SerializeField]
+    private float _flipAnimationSpeed = 1f;
 
     private void Start() 
     {
         _button = GetComponent<Button>();
-        _button.onClick.AddListener(FlipIn);
+        _button.onClick.AddListener(Flip);
     }
 
     private void OnDestroy() 
     {
-        _button.GetComponent<Button>().onClick.RemoveListener(FlipIn);
+        _button.GetComponent<Button>().onClick.RemoveListener(Flip);
     }
 
     private void Update() 
@@ -45,21 +47,21 @@ public class CardController : MonoBehaviour
 
     public void Unflip()
     {
-        _cardIcon.enabled = false;
-        //LeanTween.scaleX(gameObject, 0.05f, 0.05f).setOnComplete(FlipOut);
+        LeanTween.scaleX(gameObject, 0.05f, _flipAnimationSpeed).setOnComplete(() => ShowCardIcon(false));
     }
 
-    public void FlipIn()
+    public void Flip()
     {
-        _cardIcon.enabled = true;
-        //CardClicked();
-        LeanTween.scaleX(gameObject, 0.05f, 0.05f).setOnComplete(FlipOut);
+        LeanTween.scaleX(gameObject, 0.05f, _flipAnimationSpeed).setOnComplete(() => ShowCardIcon(true));
     }
 
-    public void FlipOut()
+    public void ShowCardIcon(bool value)
     {
-        _cardIcon.enabled = true;
-        LeanTween.scaleX(gameObject, 1f, 0.05f).setOnComplete(CardClicked);
-    }
+        _cardIcon.enabled = value;
+        if(value)
+            LeanTween.scaleX(gameObject, 1f, _flipAnimationSpeed).setOnComplete(CardClicked);
+        else
+            LeanTween.scaleX(gameObject, 1f, _flipAnimationSpeed);
+    }   
 
 }

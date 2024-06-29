@@ -21,6 +21,8 @@ public class CardDynamicDisplayGrid : MonoBehaviour
     private float _cardWidth;
     private float _cardHeight;
 
+    public int NumberOfCards {get; private set;}
+
     void Start()
     {
         _containerRect = GetComponent<RectTransform>();
@@ -57,13 +59,15 @@ public class CardDynamicDisplayGrid : MonoBehaviour
         }
 
         int maxNumberOfCards = (_columns * _rows) / 2;
+        NumberOfCards = _columns * _rows;
 
         List<Card> cardsShuffle = new List<Card>();
 
-        for (int i = 0; i <= maxNumberOfCards; i++)
+        for (int i = 0; i < maxNumberOfCards; i++)
         {
-            cardsShuffle.Add(_cardsVariations[Random.Range(0, _cardsVariations.Count)]);
-            cardsShuffle.Add(_cardsVariations[Random.Range(0, _cardsVariations.Count)]);
+            int randomCard = Random.Range(0, _cardsVariations.Count);
+            cardsShuffle.Add(_cardsVariations[randomCard]);
+            cardsShuffle.Add(_cardsVariations[randomCard]);
         }
 
         CardShuffle.Shuffle(cardsShuffle);

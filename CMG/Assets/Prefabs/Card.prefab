@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardIcon: {fileID: 9002015918114753502}
+  _flipAnimationSpeed: 0.15
 --- !u!1 &4827882015546238761
 GameObject:
   m_ObjectHideFlags: 0

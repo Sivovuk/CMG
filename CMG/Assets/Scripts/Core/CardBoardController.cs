@@ -8,24 +8,25 @@ public class CardBoardController : MonoBehaviour
     [Header("Cards Setup")]
     [SerializeField]
     private List<CardController> _cardSelected = new List<CardController>();
+    private CardDynamicDisplayGrid _cardGrid;
+    [SerializeField]
+    private GameFinishedUI _gameFinishedUI;
 
     public static CardBoardController Instance {get; private set;}
+
+    private int _pairsCounter = 0;
 
     private void Awake() 
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(this);
-        }
     }
 
     void Start()
     {
-        
+        _cardGrid = GetComponent<CardDynamicDisplayGrid>();
     }
 
     public void CardSelected(CardController card)
@@ -44,6 +45,10 @@ public class CardBoardController : MonoBehaviour
             _cardSelected[1].Collected();
             _cardSelected.Remove(_cardSelected[1]);
             _cardSelected.Remove(_cardSelected[0]);
+            _pairsCounter+=2;
+
+            if (_pairsCounter >= _cardGrid.NumberOfCards)
+                GameFinished();
         }
         else
         {
@@ -52,6 +57,12 @@ public class CardBoardController : MonoBehaviour
             _cardSelected.Remove(_cardSelected[1]);
             _cardSelected.Remove(_cardSelected[0]);
         }
+    }
+
+    private void GameFinished()
+    {
+        _gameFinishedUI.gameObject.SetActive(true);
+        _gameFinishedUI.UISetup(4,5);
     }
 
 }
