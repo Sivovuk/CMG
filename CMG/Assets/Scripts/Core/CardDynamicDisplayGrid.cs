@@ -77,8 +77,10 @@ public class CardDynamicDisplayGrid : MonoBehaviour
             for (int col = 0; col < _columns; col++)
             {
                 GameObject card = Instantiate(cardsShuffle[counter].CardPrefab, transform);
-                counter++;
                 RectTransform cardRect = card.GetComponent<RectTransform>();
+
+                card.GetComponent<CardController>().CardSetup(cardsShuffle[counter]);
+                counter++;
 
                 // Set card size
                 cardRect.sizeDelta = new Vector2(newSize, newSize);
