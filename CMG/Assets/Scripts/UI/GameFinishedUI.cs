@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameFinishedUI : MonoBehaviour
 {
+    public const string MainMenuSceneKey = "MainMenu";
+
     [SerializeField]
     private TMP_Text _scoreTMP;
     [SerializeField]
@@ -15,5 +18,15 @@ public class GameFinishedUI : MonoBehaviour
     {
         _scoreTMP.text = score.ToString();
         _turnsTMP.text = turns.ToString();
+    }
+
+    public void RetrunToMainMenu()
+    {
+        SceneManager.LoadScene(MainMenuSceneKey);
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
