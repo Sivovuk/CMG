@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Card 2
   m_EditorClassIdentifier: 
   CardID: 2
-  CardPrefab: {fileID: 3411609499570076781, guid: e2f4f3c543de92f4791b77ecfc391120, type: 3}
+  CardPrefab: {fileID: 8251767941170857579, guid: 898b8ef7a455dc244b8135f6081e3a35, type: 3}
