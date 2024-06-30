@@ -27,6 +27,7 @@ public class GameFinishedUI : MonoBehaviour
 
     public void Restart()
     {
+        GameManager.Instance.SetNewGame();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

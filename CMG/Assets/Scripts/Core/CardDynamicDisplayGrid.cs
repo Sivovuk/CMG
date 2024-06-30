@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CardDynamicDisplayGrid : MonoBehaviour
@@ -23,11 +24,9 @@ public class CardDynamicDisplayGrid : MonoBehaviour
 
     public int NumberOfCards {get; private set;}
 
-    void Start()
+    void Awake()
     {
         _containerRect = GetComponent<RectTransform>();
-        CalculateCardSize();
-        SpawnCards();
     }
 
     void Update()
@@ -35,8 +34,14 @@ public class CardDynamicDisplayGrid : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             CalculateCardSize();
-            SpawnCards();
+            SpawnNewCards();
         }
+    }
+
+    public void StartNewGame()
+    {
+        CalculateCardSize();
+        SpawnNewCards();
     }
 
     void CalculateCardSize()
@@ -51,7 +56,7 @@ public class CardDynamicDisplayGrid : MonoBehaviour
         
     }
 
-    void SpawnCards()
+    void SpawnNewCards()
     {
         foreach (Transform child in transform)
         {
@@ -72,9 +77,9 @@ public class CardDynamicDisplayGrid : MonoBehaviour
 
         CardShuffle.Shuffle(cardsShuffle);
 
-        int counter = 0;
-
         float newSize = _cardWidth <= _cardHeight ? _cardWidth : _cardHeight;
+
+        int counter = 0;
 
         for (int row = 0; row < _rows; row++)
         {
@@ -94,6 +99,25 @@ public class CardDynamicDisplayGrid : MonoBehaviour
                 float yPos = row * (newSize + _verticalSpacing) - _containerRect.rect.height / 2 + newSize / 2;
                 cardRect.localPosition = new Vector3(xPos, yPos, 0);
             }
+        }
+    }
+
+    public void LoadGame(SaveGameData gameData)
+    {
+        CalculateCardSize();
+        float newSize = _cardWidth <= _cardHeight ? _cardWidth : _cardHeight;
+        NumberOfCards = gameData.Cards.Count + (gameData.Matches*2);
+
+        foreach (SaveCardData card in gameData.Cards)
+        {
+            Card currentCard = _cardsVariations.FirstOrDefault(x => x.CardID == card.CardId);
+            GameObject spawnCard = Instantiate(currentCard.CardPrefab, card.CardPosition, Quaternion.identity, transform);
+
+            RectTransform cardRect = spawnCard.GetComponent<RectTransform>();
+            cardRect.sizeDelta = new Vector2(newSize, newSize);
+
+            spawnCard.GetComponent<CardController>().CardSetup(currentCard);
+
         }
     }
 }

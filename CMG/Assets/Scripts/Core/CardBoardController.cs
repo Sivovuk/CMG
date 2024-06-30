@@ -10,6 +10,7 @@ public class CardBoardController : MonoBehaviour
     [Header("Cards Setup")]
     [SerializeField]
     private List<CardController> _cardSelected = new List<CardController>();
+    [SerializeField]    
     private CardDynamicDisplayGrid _cardGrid;
     [SerializeField]
     private GameFinishedUI _gameFinishedUI;
@@ -35,7 +36,6 @@ public class CardBoardController : MonoBehaviour
 
     void Start()
     {
-        _cardGrid = GetComponent<CardDynamicDisplayGrid>();
         OnValueChange += TextUpdate;
     }
 
@@ -43,6 +43,8 @@ public class CardBoardController : MonoBehaviour
     {
         OnValueChange -= TextUpdate;
     }
+
+    #region Game
 
     public void CardSelected(CardController card)
     {
@@ -76,10 +78,13 @@ public class CardBoardController : MonoBehaviour
         }
 
         OnValueChange?.Invoke();
+
+        SaveGame();
     }
 
     private void GameFinished()
     {
+        Debug.Log((_matches*2) +" >= " +  _cardGrid.NumberOfCards);
         _gameFinishedUI.gameObject.SetActive(true);
         _gameFinishedUI.UISetup(_matches, _turnsCounter);
     }
@@ -89,5 +94,42 @@ public class CardBoardController : MonoBehaviour
         _scoreTMP.text = _matches.ToString();
         _turnsTMP.text = _turnsCounter.ToString();
     }
+        
+    #endregion
 
+    #region Game Load
+    
+    public void NewGame()
+    {
+        _cardGrid.StartNewGame();
+    }
+
+    public void LoadGame(SaveGameData gameData)
+    {
+        Debug.Log("load game data CardBoardController " + gameData);
+        _cardGrid.LoadGame(gameData);
+
+        _turnsCounter = gameData.Turns;
+        _turnsTMP.text = gameData.Turns.ToString();
+        _matches = gameData.Matches;
+        _scoreTMP.text = gameData.Matches.ToString();
+    }
+
+    public void SaveGame()
+    {
+        SaveGameData gameData = new SaveGameData();
+        gameData.Turns = _turnsCounter;
+        gameData.Matches = _matches;
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            int id = transform.GetChild(i).GetComponent<CardController>().CardInfo.CardID;
+            Vector3 position = transform.GetChild(i).position;
+            gameData.Cards.Add(new SaveCardData(id, position));
+        }
+
+        GameManager.Instance.SaveGame(gameData);
+    }
+    
+    #endregion
 }
