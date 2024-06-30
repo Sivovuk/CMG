@@ -38,14 +38,16 @@ public class GameManager : MonoBehaviour
 
         SceneManager.sceneLoaded += LoadGame;
         SceneManager.sceneLoaded += LoadScoreboardData;
+        SceneManager.sceneLoaded += PlayMusic;
 
-        LoadScoreboardData(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+        //LoadScoreboardData(SceneManager.GetActiveScene(), LoadSceneMode.Single);
     }
 
     private void OnDestroy() 
     {
         SceneManager.sceneLoaded -= LoadGame;
         SceneManager.sceneLoaded -= LoadScoreboardData;
+        SceneManager.sceneLoaded -= PlayMusic;
     }
 
     public void SetNewGame()
@@ -125,4 +127,12 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
+    private void PlayMusic(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == GameFinishedUI.MainMenuSceneKey)
+            AudioController.Instance.PlayAudio(AudioController.Instance.BackgroundMusic);
+        else
+            AudioController.Instance.StopAudio(AudioController.Instance.BackgroundMusic);
+    }
 }

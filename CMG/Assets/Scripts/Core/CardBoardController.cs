@@ -65,6 +65,7 @@ public class CardBoardController : MonoBehaviour
             _cardSelected.Remove(_cardSelected[1]);
             _cardSelected.Remove(_cardSelected[0]);
             _matches++;
+            AudioController.Instance.PlayAudio(AudioController.Instance.Match);
 
             if ((_matches*2) >= _cardGrid.NumberOfCards)
             {
@@ -78,6 +79,7 @@ public class CardBoardController : MonoBehaviour
             _cardSelected[1].Unflip();
             _cardSelected.Remove(_cardSelected[1]);
             _cardSelected.Remove(_cardSelected[0]);
+            AudioController.Instance.PlayAudio(AudioController.Instance.Mismatch);
         }
 
         OnValueChange?.Invoke();
@@ -90,6 +92,7 @@ public class CardBoardController : MonoBehaviour
         Debug.Log((_matches*2) +" >= " +  _cardGrid.NumberOfCards);
         _gameFinishedUI.gameObject.SetActive(true);
         _gameFinishedUI.UISetup(_matches, _turnsCounter);
+        AudioController.Instance.PlayAudio(AudioController.Instance.GameEnd);
     }
 
     private void TextUpdate()

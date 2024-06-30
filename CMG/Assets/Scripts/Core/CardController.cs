@@ -53,6 +53,7 @@ public class CardController : MonoBehaviour
     public void Flip()
     {
         LeanTween.scaleX(gameObject, 0.05f, _flipAnimationSpeed).setOnComplete(() => ShowCardIcon(true));
+        AudioController.Instance.PlayAudio(AudioController.Instance.Flip);
     }
 
     public void ShowCardIcon(bool value)
