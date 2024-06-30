@@ -102,7 +102,7 @@ public class CardDynamicDisplayGrid : MonoBehaviour
         }
     }
 
-    public void LoadGame(SaveGameData gameData)
+    public void LoadGame(GameData gameData)
     {
         CalculateCardSize();
         float newSize = _cardWidth <= _cardHeight ? _cardWidth : _cardHeight;

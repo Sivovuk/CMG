@@ -306,8 +306,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376fad817bcff3748bccd63a25119668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rows: 4
-  _columns: 4
+  _rows: 2
+  _columns: 2
   _horizontalSpacing: 25
   _verticalSpacing: 25
   _cardsVariations:

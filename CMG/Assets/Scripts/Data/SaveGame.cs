@@ -6,7 +6,7 @@ public class SaveGame : MonoBehaviour
 {
     public const string SaveGameKey = "GameData";
 
-    public void SaveGameData(SaveGameData data)
+    public void SaveGameData(GameData data)
     {
         string json = JsonUtility.ToJson(data);
 
@@ -16,7 +16,7 @@ public class SaveGame : MonoBehaviour
 }
 
 [System.Serializable]
-public class SaveGameData
+public class GameData
 {
     public List<SaveCardData> Cards = new List<SaveCardData>();
     public int Turns;

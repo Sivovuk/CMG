@@ -67,7 +67,10 @@ public class CardBoardController : MonoBehaviour
             _matches++;
 
             if ((_matches*2) >= _cardGrid.NumberOfCards)
+            {
                 GameFinished();
+                GameManager.Instance.AddScore(_matches);
+            }
         }
         else
         {
@@ -104,7 +107,7 @@ public class CardBoardController : MonoBehaviour
         _cardGrid.StartNewGame();
     }
 
-    public void LoadGame(SaveGameData gameData)
+    public void LoadGame(GameData gameData)
     {
         Debug.Log("load game data CardBoardController " + gameData);
         _cardGrid.LoadGame(gameData);
@@ -117,7 +120,7 @@ public class CardBoardController : MonoBehaviour
 
     public void SaveGame()
     {
-        SaveGameData gameData = new SaveGameData();
+        GameData gameData = new GameData();
         gameData.Turns = _turnsCounter;
         gameData.Matches = _matches;
 
