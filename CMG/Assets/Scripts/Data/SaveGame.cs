@@ -21,6 +21,8 @@ public class GameData
     public List<SaveCardData> Cards = new List<SaveCardData>();
     public int Turns;
     public int Matches;
+    public int ComboCounter;
+    public int HighestCombo;
 }
 
 [System.Serializable]

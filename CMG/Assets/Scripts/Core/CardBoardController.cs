@@ -25,6 +25,8 @@ public class CardBoardController : MonoBehaviour
 
     private int _matches = 0;
     private int _turnsCounter = 0;
+    private int _comboCounter = 0;
+    private int _highestCombo = 1;
 
     private void Awake() 
     {
@@ -64,13 +66,18 @@ public class CardBoardController : MonoBehaviour
             _cardSelected[1].Collected();
             _cardSelected.Remove(_cardSelected[1]);
             _cardSelected.Remove(_cardSelected[0]);
-            _matches++;
             AudioController.Instance.PlayAudio(AudioController.Instance.Match);
+
+            _matches++;
+            _comboCounter++;
+
+            if(_highestCombo < _comboCounter && _comboCounter >= 2)
+                _highestCombo = _comboCounter;
 
             if ((_matches*2) >= _cardGrid.NumberOfCards)
             {
                 GameFinished();
-                GameManager.Instance.AddScore(_matches);
+                GameManager.Instance.AddScore(_matches + _highestCombo - 1);
             }
         }
         else
@@ -79,6 +86,8 @@ public class CardBoardController : MonoBehaviour
             _cardSelected[1].Unflip();
             _cardSelected.Remove(_cardSelected[1]);
             _cardSelected.Remove(_cardSelected[0]);
+
+            _comboCounter = 0;
             AudioController.Instance.PlayAudio(AudioController.Instance.Mismatch);
         }
 
@@ -89,15 +98,14 @@ public class CardBoardController : MonoBehaviour
 
     private void GameFinished()
     {
-        Debug.Log((_matches*2) +" >= " +  _cardGrid.NumberOfCards);
         _gameFinishedUI.gameObject.SetActive(true);
-        _gameFinishedUI.UISetup(_matches, _turnsCounter);
+        _gameFinishedUI.UISetup(_matches + _highestCombo - 1, _turnsCounter);
         AudioController.Instance.PlayAudio(AudioController.Instance.GameEnd);
     }
 
     private void TextUpdate()
     {
-        _scoreTMP.text = _matches.ToString();
+        _scoreTMP.text = (_matches + _highestCombo - 1).ToString();
         _turnsTMP.text = _turnsCounter.ToString();
     }
         
@@ -105,9 +113,9 @@ public class CardBoardController : MonoBehaviour
 
     #region Game Load
     
-    public void NewGame()
+    public void NewGame(int difficultyIndex)
     {
-        _cardGrid.StartNewGame();
+        _cardGrid.StartNewGame(difficultyIndex);
     }
 
     public void LoadGame(GameData gameData)
@@ -119,6 +127,8 @@ public class CardBoardController : MonoBehaviour
         _turnsTMP.text = gameData.Turns.ToString();
         _matches = gameData.Matches;
         _scoreTMP.text = gameData.Matches.ToString();
+        _comboCounter = gameData.ComboCounter;
+        _highestCombo = gameData.HighestCombo;
     }
 
     public void SaveGame()
@@ -126,6 +136,8 @@ public class CardBoardController : MonoBehaviour
         GameData gameData = new GameData();
         gameData.Turns = _turnsCounter;
         gameData.Matches = _matches;
+        gameData.ComboCounter = _comboCounter;
+        gameData.HighestCombo = _highestCombo;
 
         for (int i = 0; i < transform.childCount; i++)
         {

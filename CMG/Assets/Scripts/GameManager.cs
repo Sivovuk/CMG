@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     private SaveScoreboard _saveScoreboard;
     private LoadScoreboard _loadScoreboard;
 
+    public int DifficultyLevel { get; private set; }
+
     private void Awake() 
     {
         if(Instance == null)
@@ -71,7 +73,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            CardBoardController.Instance.NewGame();
+            CardBoardController.Instance.NewGame(DifficultyLevel);
         }
 
         _newGame = false;
@@ -127,6 +129,11 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
+    public void SetDifficultyLevel(int index)
+    {
+        DifficultyLevel = index;
+    }
 
     private void PlayMusic(Scene scene, LoadSceneMode mode)
     {

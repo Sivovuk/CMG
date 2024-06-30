@@ -38,8 +38,24 @@ public class CardDynamicDisplayGrid : MonoBehaviour
         }
     }
 
-    public void StartNewGame()
+    public void StartNewGame(int difficultyIndex)
     {
+        if(difficultyIndex == 1)
+        {
+            _rows = 2;
+            _columns = 3;
+        }
+        else if(difficultyIndex == 2)
+        {
+            _rows = 5;
+            _columns = 4;
+        }
+        else if(difficultyIndex == 3)
+        {
+            _rows = 6;
+            _columns = 6;
+        }
+
         CalculateCardSize();
         SpawnNewCards();
     }

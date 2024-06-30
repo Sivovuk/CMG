@@ -14,6 +14,8 @@ public class CardController : MonoBehaviour
     [SerializeField]
     private float _flipAnimationSpeed = 1f;
 
+    private bool _isClicked;
+
     private void Start() 
     {
         _button = GetComponent<Button>();
@@ -37,6 +39,7 @@ public class CardController : MonoBehaviour
 
     public void CardClicked()
     {
+
         CardBoardController.Instance.CardSelected(this);
     }
 
@@ -52,6 +55,9 @@ public class CardController : MonoBehaviour
 
     public void Flip()
     {
+        if (_isClicked) return;
+        _isClicked = true;
+
         LeanTween.scaleX(gameObject, 0.05f, _flipAnimationSpeed).setOnComplete(() => ShowCardIcon(true));
         AudioController.Instance.PlayAudio(AudioController.Instance.Flip);
     }
@@ -62,7 +68,7 @@ public class CardController : MonoBehaviour
         if(value)
             LeanTween.scaleX(gameObject, 1f, _flipAnimationSpeed).setOnComplete(CardClicked);
         else
-            LeanTween.scaleX(gameObject, 1f, _flipAnimationSpeed);
+            LeanTween.scaleX(gameObject, 1f, _flipAnimationSpeed).setOnComplete(() => _isClicked = false);
     }   
 
 }
