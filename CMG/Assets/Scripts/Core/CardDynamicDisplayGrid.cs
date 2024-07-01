@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class CardDynamicDisplayGrid : MonoBehaviour
 {
+    public int Rows {get; private set;}
+    public int Columns {get; private set;}
+    
     [Header("Board Setup")]
-    [SerializeField]
-    private int _rows = 1;
-    [SerializeField]
-    private int _columns = 1;
     [SerializeField]
     private float _horizontalSpacing = 10f;
     [SerializeField]
@@ -42,18 +41,18 @@ public class CardDynamicDisplayGrid : MonoBehaviour
     {
         if(difficultyIndex == 1)
         {
-            _rows = 2;
-            _columns = 3;
+            Rows = 2;
+            Columns = 3;
         }
         else if(difficultyIndex == 2)
         {
-            _rows = 5;
-            _columns = 4;
+            Rows = 5;
+            Columns = 4;
         }
         else if(difficultyIndex == 3)
         {
-            _rows = 6;
-            _columns = 6;
+            Rows = 6;
+            Columns = 6;
         }
 
         CalculateCardSize();
@@ -63,11 +62,11 @@ public class CardDynamicDisplayGrid : MonoBehaviour
     void CalculateCardSize()
     {
         // Calculate the size of each card based on the container size and number of cards
-        float containerWidth = _containerRect.rect.width - (_columns - 1) * _horizontalSpacing;
-        float containerHeight = _containerRect.rect.height - (_rows - 1) * _verticalSpacing;
+        float containerWidth = _containerRect.rect.width - (Columns - 1) * _horizontalSpacing;
+        float containerHeight = _containerRect.rect.height - (Rows - 1) * _verticalSpacing;
 
-        _cardWidth = containerWidth / _columns;
-        _cardHeight = containerHeight / _rows;
+        _cardWidth = containerWidth / Columns;
+        _cardHeight = containerHeight / Rows;
 
         
     }
@@ -79,8 +78,8 @@ public class CardDynamicDisplayGrid : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        int maxNumberOfCards = (_columns * _rows) / 2;
-        NumberOfCards = _columns * _rows;
+        int maxNumberOfCards = (Columns * Rows) / 2;
+        NumberOfCards = Columns * Rows;
 
         List<Card> cardsShuffle = new List<Card>();
 
@@ -97,9 +96,9 @@ public class CardDynamicDisplayGrid : MonoBehaviour
 
         int counter = 0;
 
-        for (int row = 0; row < _rows; row++)
+        for (int row = 0; row < Rows; row++)
         {
-            for (int col = 0; col < _columns; col++)
+            for (int col = 0; col < Columns; col++)
             {
                 GameObject card = Instantiate(cardsShuffle[counter].CardPrefab, transform);
                 RectTransform cardRect = card.GetComponent<RectTransform>();
@@ -118,9 +117,13 @@ public class CardDynamicDisplayGrid : MonoBehaviour
         }
     }
 
-    public void LoadGame(GameData gameData)
+    public void LoadGame(GameData gameData, int rows, int columns)
     {
+        Rows = rows;
+        Columns = columns;
+
         CalculateCardSize();
+
         float newSize = _cardWidth <= _cardHeight ? _cardWidth : _cardHeight;
         NumberOfCards = gameData.Cards.Count + (gameData.Matches*2);
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LoadScoreboard : MonoBehaviour
 {
-    public ScoreboardDataList LoadGameData()
+    public ScoreboardDataList LoadScoreboardData()
     {
         if (PlayerPrefs.HasKey(SaveScoreboard.SaveScoreboardKey))
         {

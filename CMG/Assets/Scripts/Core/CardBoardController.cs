@@ -62,8 +62,8 @@ public class CardBoardController : MonoBehaviour
 
         if (_cardSelected[0].CardInfo.CardID == _cardSelected[1].CardInfo.CardID)
         {
-            _cardSelected[0].Collected();
             _cardSelected[1].Collected();
+            _cardSelected[0].Collected();
             _cardSelected.Remove(_cardSelected[1]);
             _cardSelected.Remove(_cardSelected[0]);
             AudioController.Instance.PlayAudio(AudioController.Instance.Match);
@@ -78,6 +78,7 @@ public class CardBoardController : MonoBehaviour
             {
                 GameFinished();
                 GameManager.Instance.AddScore(_matches + _highestCombo - 1);
+                return;
             }
         }
         else
@@ -93,11 +94,12 @@ public class CardBoardController : MonoBehaviour
 
         OnValueChange?.Invoke();
 
-        SaveGame();
+        StartCoroutine(SaveGame());
     }
 
     private void GameFinished()
     {
+        GameManager.Instance.RemoveSaveData();
         _gameFinishedUI.gameObject.SetActive(true);
         _gameFinishedUI.UISetup(_matches + _highestCombo - 1, _turnsCounter);
         AudioController.Instance.PlayAudio(AudioController.Instance.GameEnd);
@@ -120,8 +122,7 @@ public class CardBoardController : MonoBehaviour
 
     public void LoadGame(GameData gameData)
     {
-        Debug.Log("load game data CardBoardController " + gameData);
-        _cardGrid.LoadGame(gameData);
+        _cardGrid.LoadGame(gameData, gameData.Rows, gameData.Columns);
 
         _turnsCounter = gameData.Turns;
         _turnsTMP.text = gameData.Turns.ToString();
@@ -131,13 +132,17 @@ public class CardBoardController : MonoBehaviour
         _highestCombo = gameData.HighestCombo;
     }
 
-    public void SaveGame()
+    public IEnumerator SaveGame()
     {
+        yield return new WaitForSeconds(0.1f);
+        
         GameData gameData = new GameData();
         gameData.Turns = _turnsCounter;
         gameData.Matches = _matches;
         gameData.ComboCounter = _comboCounter;
         gameData.HighestCombo = _highestCombo;
+        gameData.Rows = _cardGrid.Rows;
+        gameData.Columns = _cardGrid.Columns;
 
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -145,7 +150,7 @@ public class CardBoardController : MonoBehaviour
             Vector3 position = transform.GetChild(i).position;
             gameData.Cards.Add(new SaveCardData(id, position));
         }
-
+        
         GameManager.Instance.SaveGame(gameData);
     }
     

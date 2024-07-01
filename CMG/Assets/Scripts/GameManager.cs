@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += LoadScoreboardData;
         SceneManager.sceneLoaded += PlayMusic;
 
-        //LoadScoreboardData(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+        LoadScoreboardData();
     }
 
     private void OnDestroy() 
@@ -67,7 +67,6 @@ public class GameManager : MonoBehaviour
         if(!_newGame)
         {
             GameData gameData = _loadGame.LoadGameData();
-            Debug.Log("load game data " + gameData);
 
             CardBoardController.Instance.LoadGame(gameData);
         }
@@ -94,21 +93,29 @@ public class GameManager : MonoBehaviour
         DateTime currentDate = DateTime.Today;
         string formattedDate = currentDate.ToString("yyyy-MM-dd");
 
-        if (_scoreboardData.ScoreboardData.Count <= 0)
+         // Find the position to insert the new element
+        int insertIndex = _scoreboardData.ScoreboardData.Count;
+        for (int i = 0; i < _scoreboardData.ScoreboardData.Count; i++)
         {
-            _scoreboardData.ScoreboardData.Add(new ScoreboardData(1, score, formattedDate));
-        }
-        else
-        {
-            for (int i = 0; i < _scoreboardData.ScoreboardData.Count; i++)
+            if (score > _scoreboardData.ScoreboardData[i].Score)
             {
-                if(score >= _scoreboardData.ScoreboardData[i].Score)
-                {
-                    
-                    _scoreboardData.ScoreboardData.Insert(i, new ScoreboardData(i+1, score, formattedDate));
-                    break;
-                }
+                insertIndex = i;
+                break;
             }
+        }
+
+        // Insert the element at the correct position
+        _scoreboardData.ScoreboardData.Insert(insertIndex, new ScoreboardData(insertIndex+1, score, formattedDate));
+
+        // Ensure the list does not exceed the maximum size
+        if (_scoreboardData.ScoreboardData.Count > 10)
+        {
+            _scoreboardData.ScoreboardData.RemoveAt(_scoreboardData.ScoreboardData.Count - 1); // Remove the smallest element (last in the list)
+        }
+
+        for (int i = 0; i < _scoreboardData.ScoreboardData.Count; i++)
+        {
+            _scoreboardData.ScoreboardData [i].Number = i+1;
         }
 
         SaveScoreboardData();
@@ -116,16 +123,26 @@ public class GameManager : MonoBehaviour
 
     public void LoadScoreboardData(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name != GameFinishedUI.MainMenuSceneKey) return;
+        LoadScoreboardData();
+    }
+
+    public void LoadScoreboardData()
+    {
+        if (SceneManager.GetActiveScene().name != GameFinishedUI.MainMenuSceneKey) return;
         if (!PlayerPrefs.HasKey(SaveScoreboard.SaveScoreboardKey)) return;
 
-        ScoreboardDataList data = _loadScoreboard.LoadGameData();
+        ScoreboardDataList data = _loadScoreboard.LoadScoreboardData();
         ScoreboardUI.Instance.LoadScoreboardUI(data);
     }
 
     public void SaveScoreboardData()
     {
         _saveScoreboard.SaveScoreboardData(_scoreboardData);
+    }
+
+    public void RemoveSaveData()
+    {
+        _saveGame.RemoveData();
     }
 
     #endregion

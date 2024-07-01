@@ -13,11 +13,18 @@ public class SaveGame : MonoBehaviour
         PlayerPrefs.SetString(SaveGameKey, json);
         PlayerPrefs.Save();
     }
+
+    internal void RemoveData()
+    {
+        PlayerPrefs.DeleteKey(SaveGameKey);
+    }
 }
 
 [System.Serializable]
 public class GameData
 {
+    public int Rows;
+    public int Columns;
     public List<SaveCardData> Cards = new List<SaveCardData>();
     public int Turns;
     public int Matches;
