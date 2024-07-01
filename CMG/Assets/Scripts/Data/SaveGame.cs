@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class SaveGame : MonoBehaviour
 {
-    public const string SaveGameKey = "GameData";
+    public const string SAVE_GAME_DATA_KEY = "GameData";
 
     public void SaveGameData(GameData data)
     {
         string json = JsonUtility.ToJson(data);
 
-        PlayerPrefs.SetString(SaveGameKey, json);
+        PlayerPrefs.SetString(SAVE_GAME_DATA_KEY, json);
         PlayerPrefs.Save();
     }
 
     internal void RemoveData()
     {
-        PlayerPrefs.DeleteKey(SaveGameKey);
+        PlayerPrefs.DeleteKey(SAVE_GAME_DATA_KEY);
     }
 }
 

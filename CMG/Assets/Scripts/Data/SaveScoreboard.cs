@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class SaveScoreboard : MonoBehaviour
 {
-    public const string SaveScoreboardKey = "ScoreboardData";
+    public const string SAVE_SCOREBOARD_DATA_KEY = "ScoreboardData";
 
     public void SaveScoreboardData(ScoreboardDataList data)
     {
         string json = JsonUtility.ToJson(data);
 
-        PlayerPrefs.SetString(SaveScoreboardKey, json);
+        PlayerPrefs.SetString(SAVE_SCOREBOARD_DATA_KEY, json);
         PlayerPrefs.Save();
     }
 }

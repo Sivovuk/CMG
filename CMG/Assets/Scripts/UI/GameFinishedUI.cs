@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameFinishedUI : MonoBehaviour
 {
-    public const string MainMenuSceneKey = "MainMenu";
+    public const string MAIN_MENU_SCENE_KEY = "MainMenu";
 
     [SerializeField]
     private TMP_Text _scoreTMP;
@@ -22,7 +22,7 @@ public class GameFinishedUI : MonoBehaviour
 
     public void RetrunToMainMenu()
     {
-        SceneManager.LoadScene(MainMenuSceneKey);
+        SceneManager.LoadScene(MAIN_MENU_SCENE_KEY);
     }
 
     public void Restart()

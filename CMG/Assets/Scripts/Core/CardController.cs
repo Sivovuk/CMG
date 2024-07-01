@@ -27,11 +27,6 @@ public class CardController : MonoBehaviour
         _button.GetComponent<Button>().onClick.RemoveListener(Flip);
     }
 
-    private void Update() 
-    {
-        
-    }
-
     public void CardSetup(Card cardInfo)
     {
         CardInfo = cardInfo;

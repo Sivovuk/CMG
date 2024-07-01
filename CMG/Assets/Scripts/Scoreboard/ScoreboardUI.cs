@@ -15,9 +15,7 @@ public class ScoreboardUI : MonoBehaviour
     private void Awake() 
     {
         if(Instance == null)
-        {
             Instance = this;
-        }
         else
             Destroy(this);
     }
@@ -30,7 +28,6 @@ public class ScoreboardUI : MonoBehaviour
         {
             GameObject spawn = Instantiate(_scoreboardPrefab, _scoreboardParent);
             spawn.GetComponent<ScoreboardUIElement>().SetupElement(scoreElement.Number, scoreElement.Score, scoreElement.DateTime);
-
         }
     }
 }

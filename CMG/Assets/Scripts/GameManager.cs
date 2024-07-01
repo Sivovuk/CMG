@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
     public void LoadGame(Scene scene, LoadSceneMode mode)
     {
         
-        if (scene.name != MainMenu.GameSceneKey) return;
+        if (scene.name != MainMenu.GAME_SCENE_KEY) return;
 
         if(!_newGame)
         {
@@ -71,9 +71,7 @@ public class GameManager : MonoBehaviour
             CardBoardController.Instance.LoadGame(gameData);
         }
         else
-        {
             CardBoardController.Instance.NewGame(DifficultyLevel);
-        }
 
         _newGame = false;
     
@@ -109,14 +107,10 @@ public class GameManager : MonoBehaviour
 
         // Ensure the list does not exceed the maximum size
         if (_scoreboardData.ScoreboardData.Count > 10)
-        {
             _scoreboardData.ScoreboardData.RemoveAt(_scoreboardData.ScoreboardData.Count - 1); // Remove the smallest element (last in the list)
-        }
 
         for (int i = 0; i < _scoreboardData.ScoreboardData.Count; i++)
-        {
             _scoreboardData.ScoreboardData [i].Number = i+1;
-        }
 
         SaveScoreboardData();
     }
@@ -128,8 +122,8 @@ public class GameManager : MonoBehaviour
 
     public void LoadScoreboardData()
     {
-        if (SceneManager.GetActiveScene().name != GameFinishedUI.MainMenuSceneKey) return;
-        if (!PlayerPrefs.HasKey(SaveScoreboard.SaveScoreboardKey)) return;
+        if (SceneManager.GetActiveScene().name != GameFinishedUI.MAIN_MENU_SCENE_KEY) return;
+        if (!PlayerPrefs.HasKey(SaveScoreboard.SAVE_SCOREBOARD_DATA_KEY)) return;
 
         ScoreboardDataList data = _loadScoreboard.LoadScoreboardData();
         ScoreboardUI.Instance.LoadScoreboardUI(data);
@@ -154,8 +148,11 @@ public class GameManager : MonoBehaviour
 
     private void PlayMusic(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == GameFinishedUI.MainMenuSceneKey)
+        if (scene.name == GameFinishedUI.MAIN_MENU_SCENE_KEY)
+        {
             AudioController.Instance.PlayAudio(AudioController.Instance.BackgroundMusic);
+            AudioController.Instance.StopAudio(AudioController.Instance.GameEnd);
+        }
         else
             AudioController.Instance.StopAudio(AudioController.Instance.BackgroundMusic);
     }

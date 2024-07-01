@@ -6,11 +6,11 @@ using UnityEngine.Audio;
 
 public class AudioSettings : MonoBehaviour
 {
-    const string MUSIC_KEY = "music";                   //  int 0 or 1
-    const string SOUND_KEY = "sound";                   //  int 0 or 1
+    const string MUSIC_KEY = "Music";                   //  int 0 or 1
+    const string SOUND_KEY = "Sound";                   //  int 0 or 1
 
-    const string MUSIC_SLIDER_KEY = "musicSlider";      //  float 0 or -80
-    const string SOUND_SLIDER_KEY = "soundSlider";      //  float 0 or -80
+    const string MUSIC_SLIDER_KEY = "MusicSlider";      //  float 0 or -80
+    const string SOUND_SLIDER_KEY = "SoundSlider";      //  float 0 or -80
 
     [SerializeField] private float _minValue, _maxValue;  //  the value for the mixer and slider
 
@@ -35,23 +35,14 @@ public class AudioSettings : MonoBehaviour
         if (PlayerPrefs.HasKey(MUSIC_KEY))
         {
             if (PlayerPrefs.GetInt(MUSIC_KEY) == 1)
-            {
                 _musicCheckBox.isOn = true;
-            }
             else if (PlayerPrefs.GetInt(MUSIC_KEY) == 0)
-            {
                 _musicCheckBox.isOn = false;
-            }
             else
-            {
                 Debug.LogError("Player pref Music key has invalid int!");
-            }
-
         }
         else
-        {
             PlayerPrefs.SetInt(MUSIC_KEY, 1);
-        }
 
         if (PlayerPrefs.HasKey(MUSIC_SLIDER_KEY))
         {
@@ -67,18 +58,12 @@ public class AudioSettings : MonoBehaviour
         if (PlayerPrefs.GetInt(MUSIC_KEY) == 1)
         {
             if (PlayerPrefs.HasKey(MUSIC_SLIDER_KEY))
-            {
                 _masterMixer.SetFloat(_musicKey, PlayerPrefs.GetFloat(MUSIC_SLIDER_KEY));
-            }
             else 
-            {
                 _masterMixer.SetFloat(_musicKey, _maxValue);
-            }
         }
         else if (PlayerPrefs.GetInt(MUSIC_KEY) == 0)
-        {
             _masterMixer.SetFloat(_musicKey, _minValue);
-        }
     }
 
     private void LoadSound()
@@ -86,28 +71,18 @@ public class AudioSettings : MonoBehaviour
         if (PlayerPrefs.HasKey(SOUND_KEY))
         {
             if (PlayerPrefs.GetInt(SOUND_KEY) == 1)
-            {
                 _soundCheckBox.isOn = true;
-            }
             else if (PlayerPrefs.GetInt(SOUND_KEY) == 0)
-            {
                 _soundCheckBox.isOn = false;
-            }
             else
-            {
                 Debug.LogError("Player pref Sound key has invalid int!");
-            }
         }
         else
-        {
             PlayerPrefs.SetInt(SOUND_KEY, 1);
-        }
 
 
         if (PlayerPrefs.HasKey(SOUND_SLIDER_KEY))
-        {
             _soundSlider.value = PlayerPrefs.GetFloat(SOUND_SLIDER_KEY);
-        }
         else
         {
             _masterMixer.SetFloat(_soundKey, _maxValue);
@@ -127,9 +102,7 @@ public class AudioSettings : MonoBehaviour
             }
         }
         else if (PlayerPrefs.GetInt(SOUND_KEY) == 0)
-        {
             _masterMixer.SetFloat(_soundKey, _minValue);
-        }
     }
 
     public void SetMusic()
@@ -165,9 +138,7 @@ public class AudioSettings : MonoBehaviour
         PlayerPrefs.SetFloat(MUSIC_SLIDER_KEY, _musicSlider.value);
 
         if (PlayerPrefs.GetInt(MUSIC_KEY) == 1)
-        {
             _masterMixer.SetFloat(_musicKey, _musicSlider.value);
-        }
     }
 
     public void TuneSound()
@@ -175,9 +146,7 @@ public class AudioSettings : MonoBehaviour
         PlayerPrefs.SetFloat(SOUND_SLIDER_KEY, _soundSlider.value);
 
         if (PlayerPrefs.GetInt(SOUND_KEY) == 1)
-        {
             _masterMixer.SetFloat(_soundKey, _soundSlider.value);
-        }
     }
 
 }

@@ -20,24 +20,18 @@ public class AudioController : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else 
-        {
             Destroy(gameObject);
-        }
     }
 
     public void PlayAudio(AudioSource audio) 
     {
         if (audio != null) 
-        {
             audio.PlayOneShot(audio.clip);
-        }
     }
 
     public void StopAudio(AudioSource audio)
     {
         if (audio != null)
-        {
             audio.Stop();
-        }
     }
 }

@@ -61,7 +61,6 @@ public class CardDynamicDisplayGrid : MonoBehaviour
 
     void CalculateCardSize()
     {
-        // Calculate the size of each card based on the container size and number of cards
         float containerWidth = _containerRect.rect.width - (Columns - 1) * _horizontalSpacing;
         float containerHeight = _containerRect.rect.height - (Rows - 1) * _verticalSpacing;
 
@@ -106,10 +105,8 @@ public class CardDynamicDisplayGrid : MonoBehaviour
                 card.GetComponent<CardController>().CardSetup(cardsShuffle[counter]);
                 counter++;
 
-                // Set card size
                 cardRect.sizeDelta = new Vector2(newSize, newSize);
 
-                // Set card position
                 float xPos = col * (newSize + _horizontalSpacing) - _containerRect.rect.width / 2 + newSize / 2;
                 float yPos = row * (newSize + _verticalSpacing) - _containerRect.rect.height / 2 + newSize / 2;
                 cardRect.localPosition = new Vector3(xPos, yPos, 0);
@@ -136,7 +133,6 @@ public class CardDynamicDisplayGrid : MonoBehaviour
             cardRect.sizeDelta = new Vector2(newSize, newSize);
 
             spawnCard.GetComponent<CardController>().CardSetup(currentCard);
-
         }
     }
 }
